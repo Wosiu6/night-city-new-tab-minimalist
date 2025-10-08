@@ -9,11 +9,15 @@
         "newtab": "newtab.html"
     },
     "permissions": [
-        "search"
+        "search",
+        "activeTab"
     ],
     "icons": {
         "16": "img/128.png",
         "48": "img/128.png",
         "128": "img/128.png"
+    },
+    "content_security_policy": {
+        "extension_pages": "script-src 'self'; object-src 'self'"
     }
 }

@@ -15,7 +15,6 @@ $(document).ready(function () {
 
 	activateClock();
 	handleSearch();
-	handleCustomBackground();
 });
 
 function activateClock() {
