@@ -3,6 +3,11 @@
 ## Overview
 Night City New Tab Minimalist is a browser extension designed to provide a sleek, minimalist new tab page inspired by the aesthetic of a futuristic cyberpunk city. This extension replaces the default new tab page with a clean, visually appealing interface, allowing users to focus on their browsing experience with a touch of style.
 
+<details>
+   <summary>Take a peak at how it looks</summary>
+   <img width="2553" height="1385" alt="image" src="https://github.com/user-attachments/assets/49783c8d-58de-490c-901c-79d9b42a01a5" />
+</details>
+
 ## Features
 - **Minimalist Design**: A clean and uncluttered new tab page with a cyberpunk-inspired background.
 - **Customizable Options**: Adjust themes, colors, or widgets to suit your preferences (if applicable).
