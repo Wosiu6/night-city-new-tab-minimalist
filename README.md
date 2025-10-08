@@ -47,10 +47,6 @@ Please ensure your code follows the project's coding standards and includes rele
 
 ## License
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
-## Contact
-For questions, suggestions, or issues, please open an issue on this repository or contact the maintainer at [your-email@example.com](mailto:your-email@example.com).
-
 ---
 
 *Inspired by the neon-lit streets of a cyberpunk future, built for simplicity and style.*
