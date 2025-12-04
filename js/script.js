@@ -1,6 +1,9 @@
 let shortcut_data = [];
 let create_shortcut;
-const videoUrl = "img/bg.mp4";
+const videoUrls = [
+	"img/bg.mp4",
+	"img/bg_2.mp4"
+];
 
 $(document).ready(function () {
 	const sw = screen.width;
@@ -8,8 +11,14 @@ $(document).ready(function () {
 	$("body").css("--scale", scale);
 
 	if ($("#bgVdo").length === 0) {
+		let currentIndex = parseInt(localStorage.getItem("videoIndex")) || 0;
+		
+		currentIndex = (currentIndex + 1) % videoUrls.length;
+		
+		localStorage.setItem("videoIndex", currentIndex);
+		
 		const videoElement = $('<video id="bgVdo" autoplay muted loop playsinline></video>');
-		videoElement.attr("src", videoUrl);
+		videoElement.attr("src", videoUrls[currentIndex]);
 		$("body").prepend(videoElement);
 	}
 
