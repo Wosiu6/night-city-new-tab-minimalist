@@ -1,88 +1,77 @@
-let shortcut_data = [];
-let create_shortcut;
-const videoUrls = [
-	"img/bg.mp4",
-	"img/bg_2.mp4"
-];
+const videoUrls = ["img/bg.mp4", "img/bg_2.mp4"];
 
-$(document).ready(function () {
-	const sw = screen.width;
-	const scale = sw / 2560;
-	$("body").css("--scale", scale);
+const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+const monthNames = ["January", "February", "March", "April", "May", "June",
+	"July", "August", "September", "October", "November", "December"];
 
-	if ($("#bgVdo").length === 0) {
-		let currentIndex = parseInt(localStorage.getItem("videoIndex")) || 0;
-		
-		currentIndex = (currentIndex + 1) % videoUrls.length;
-		
-		localStorage.setItem("videoIndex", currentIndex);
-		
-		const videoElement = $('<video id="bgVdo" autoplay muted loop playsinline></video>');
-		videoElement.attr("src", videoUrls[currentIndex]);
-		$("body").prepend(videoElement);
-	}
+const pad = (n) => (n < 10 ? "0" + n : "" + n);
 
-	activateClock();
-	handleSearch();
+document.addEventListener("DOMContentLoaded", () => {
+	document.body.style.setProperty("--scale", screen.width / 2560);
+	initBackground();
+	initClock();
+	initSearch();
 });
 
-function activateClock() {
-	const time_element = $("#time");
-	const today_element = $("#today");
+function initBackground() {
+	if (document.getElementById("bgVdo")) return;
 
-	function updateClock() {
-		let date = new Date();
-		let hh = date.getHours();
-		let mm = date.getMinutes();
-		let ss = date.getSeconds();
-		let session = "AM";
+	const index = ((parseInt(localStorage.getItem("videoIndex")) || 0) + 1) % videoUrls.length;
+	localStorage.setItem("videoIndex", index);
 
-		if (hh >= 12) session = "PM";
-		if (hh == 0) hh = 12;
-		if (hh > 12) hh -= 12;
-
-		hh = hh < 10 ? "0" + hh : hh;
-		mm = mm < 10 ? "0" + mm : mm;
-		ss = ss < 10 ? "0" + ss : ss;
-
-		time_element.text(`${hh}:${mm}:${ss} ${session}`);
-
-		const dayArray = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-		const monthArray = ["January", "February", "March", "April", "May", "June",
-			"July", "August", "September", "October", "November", "December"];
-		const todayStr = `${dayArray[date.getDay()]}, ${monthArray[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
-
-		if (today_element.text() !== todayStr) {
-			today_element.text(todayStr);
-		}
-
-		setTimeout(updateClock, 1000);
-	}
-
-	updateClock();
+	const video = document.createElement("video");
+	video.id = "bgVdo";
+	video.autoplay = true;
+	video.loop = true;
+	video.playsInline = true;
+	video.muted = true;
+	video.defaultMuted = true; // reflects the `muted` attribute so autoplay policy allows playback
+	video.setAttribute("muted", "");
+	video.src = videoUrls[index];
+	document.body.prepend(video);
+	video.play().catch(() => {});
 }
 
-function handleSearch() {
-	const search_trigger = $("#searchTrigger");
-	const search_input = $("#searchInput");
+function initClock() {
+	const timeEl = document.getElementById("time");
+	const todayEl = document.getElementById("today");
+	let lastDate = "";
 
-	search_input.keyup((e) => {
-		if (e.keyCode === 13) {
-			search_trigger.click();
+	function tick() {
+		const now = new Date();
+		let h = now.getHours();
+		const session = h >= 12 ? "PM" : "AM";
+		h = h % 12 || 12;
+
+		timeEl.textContent = `${pad(h)}:${pad(now.getMinutes())}:${pad(now.getSeconds())} ${session}`;
+
+		const dateStr = `${dayNames[now.getDay()]}, ${monthNames[now.getMonth()]} ${now.getDate()}, ${now.getFullYear()}`;
+		if (dateStr !== lastDate) {
+			todayEl.textContent = dateStr;
+			lastDate = dateStr;
 		}
-	});
+	}
 
-	search_trigger.click(() => {
-		const query = search_input.val();
+	tick();
+	setInterval(tick, 1000);
+}
+
+function initSearch() {
+	const trigger = document.getElementById("searchTrigger");
+	const input = document.getElementById("searchInput");
+
+	const runSearch = () => {
+		const query = input.value.trim();
 		if (query) {
-			chrome.search.query({ text: query }, function (results) {
-				if (results && results.length > 0) {
-					window.location.href = results[0].url;
-				}
-			});
+			chrome.search.query({ text: query });
 		} else {
-			search_input.attr("placeholder", "Search...");
-			setTimeout(() => search_input.attr("placeholder", "Search"), 2000);
+			input.placeholder = "Search...";
+			setTimeout(() => (input.placeholder = "Search"), 2000);
 		}
+	};
+
+	trigger.addEventListener("click", runSearch);
+	input.addEventListener("keyup", (e) => {
+		if (e.key === "Enter") runSearch();
 	});
 }
