@@ -5,23 +5,62 @@
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<title>New Tab</title>
-	<link rel="stylesheet" href="/css/style.css" />
-	<link rel="shortcut icon" href="/img/128.png" type="image/x-icon" />
+	<link rel="stylesheet" href="css/style.css" />
+	<link rel="shortcut icon" href="img/128.png" type="image/x-icon" />
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 	<link rel="stylesheet"
-		href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,400,0,0&display=swap" />
+		href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Inter:wght@300;400;500;600&family=Roboto+Mono:wght@300;400;500&family=Playfair+Display:wght@400;500;600&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,400,0,0&display=swap" />
 </head>
 
-<body>
+<body data-clock-pos="bottom-right">
+	<div id="overlay"></div>
+
+	<div id="greeting"></div>
+
 	<div id="searchBar">
 		<span id="searchTrigger" class="material-symbols-outlined">search</span>
-		<input type="text" id="searchInput" placeholder="Search..." />
+		<input type="text" id="searchInput" placeholder="Search..." autocomplete="off" spellcheck="false" />
+		<span id="searchEngineBadge" title="Search engine"></span>
 	</div>
+
+	<div id="shortcuts"></div>
+
 	<div id="clock">
 		<div id="time"></div>
 		<div id="today"></div>
 	</div>
+
+	<button id="settingsToggle" class="material-symbols-outlined" title="Settings (press S)"
+		aria-label="Open settings">settings</button>
+
+	<div id="settingsOverlay"></div>
+
+	<aside id="settingsPanel" aria-hidden="true">
+		<header id="settingsHeader">
+			<span class="settings-title">
+				<span class="material-symbols-outlined">tune</span>
+				Settings
+			</span>
+			<button id="settingsClose" class="material-symbols-outlined" title="Close"
+				aria-label="Close settings">close</button>
+		</header>
+		<div id="settingsBody"></div>
+		<footer id="settingsFooter">
+			<button id="exportSettings" class="ghost-btn">
+				<span class="material-symbols-outlined">download</span> Export
+			</button>
+			<button id="importSettings" class="ghost-btn">
+				<span class="material-symbols-outlined">upload</span> Import
+			</button>
+			<button id="resetSettings" class="danger-btn">
+				<span class="material-symbols-outlined">restart_alt</span> Reset
+			</button>
+		</footer>
+	</aside>
+
+	<input type="file" id="importFile" accept="application/json" hidden />
+
 	<script src="js/script.js"></script>
 </body>
 
